@@ -1,4 +1,39 @@
+import org.junit.Before;
+import org.junit.Test;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class TestConverter {
-
+	
+	Converter converter;
+	
+	@Before
+	public void setUp(){
+		converter = new Converter();
+	}
+	
+	@Test
+	public void hexToInt_validHexString_ShouldReturnConvertedValue(){
+		
+		assertThat(converter.hexToInt("03ac0"), equalTo(15040));
+	}
+	
+	@Test
+	public void hexToInt_emptyString_ShouldReturnZero(){
+		
+		assertThat(converter.hexToInt(""), equalTo(0));
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void hexToInt_TooLongString_ShouldThrowIllegalArgumentException(){
+		
+		converter.hexToInt("03ac0fb");
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void hexToInt_InvalidCharacter_ShouldThrowIllegalArgumentException(){
+		
+		converter.hexToInt("æøtlk");
+	}
 }
