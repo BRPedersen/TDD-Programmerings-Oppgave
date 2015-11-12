@@ -1,0 +1,67 @@
+import org.junit.Before;
+import org.junit.Test;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+public class TestConverter {
+	
+	Converter converter;
+	
+	@Before
+	public void setUp(){
+		converter = new Converter();
+	}
+	
+	// HexToInt - tester
+	
+	@Test
+	public void hexToInt_validHexString_ShouldReturnConvertedValue(){
+		
+		assertThat(converter.hexToInt("03ac0"), equalTo(15040));
+	}
+	
+	@Test
+	public void hexToInt_emptyString_ShouldReturnZero(){
+		
+		assertThat(converter.hexToInt(""), equalTo(0));
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void hexToInt_TooLongString_ShouldThrowIllegalArgumentException(){
+		
+		converter.hexToInt("03ac0fb");
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	public void hexToInt_InvalidCharacter_ShouldThrowIllegalArgumentException(){
+		
+		converter.hexToInt("æøtlk");
+	}
+	
+	// BitToInt - tester
+	
+		@Test
+		public void bitToInt_ValidBitString_ShouldReturnConvertedValue(){
+			
+			assertThat(converter.bitToInt("110101000000110111001101"), equalTo(13897165));
+		}
+		
+		@Test
+		public void bitToInt_EmptyString_ShouldReturnZero(){
+			
+			assertThat(converter.bitToInt(""), equalTo(0));
+		}
+		
+		@Test(expected=IllegalArgumentException.class)
+		public void bitToInt_TooLongString_ShouldThrowIllegalArgumentException(){
+			
+			converter.bitToInt("1101010000001101110011010");
+		}
+		
+		@Test(expected=IllegalArgumentException.class)
+		public void bitToInt_InvalidCharacterInString_ShouldThrowIllegalArgumentException(){
+			
+			converter.bitToInt("110101000002110111001101");
+		}
+}
