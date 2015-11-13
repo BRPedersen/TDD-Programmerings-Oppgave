@@ -70,20 +70,6 @@ public class TestConverter {
 	@Test
 	public void intToBit_ValidIntValue_ShouldReturnConvertedValue(){
 		
-		assertThat(converter.intToBit(999), equalTo("000000000000001111100111"));
-	}
-	
-	// Bitwise - Tester
-	
-	@Test
-	public void bitwise_BitwiseANDOperationOnTwoBitStrings_ShouldReturnTwentyFourCharBitString(){
-		
-		assertThat(converter.bitwise("000000000000000000111100", "000000000000000000001101", 1), equalTo("000000000000000000001100"));
-	}
-	
-	@Test
-	public void bitwise_BitwiseOROperationOnTwoBitStrings_ShouldReturnTwentyFourCharBitString(){
-		
-		assertThat(converter.bitwise("000000000000000000111100", "000000000000000000001101", 2), equalTo("000000000000000000110001"));
+		assertThat(converter.convertBinary(999), equalTo("000000000000001111100111"));
 	}
 }

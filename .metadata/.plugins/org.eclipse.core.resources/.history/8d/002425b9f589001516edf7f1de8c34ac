@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Converter {
@@ -47,7 +48,7 @@ public class Converter {
 	}
 	
 	/** Metode for å konvertere en int verdi til en Bit-string */
-	public static String intToBit(int num){
+	public static String convertBinary(int num){
 		 java.util.ArrayList<Integer> binary = new java.util.ArrayList<>();		// ArrayList for å holde på bit-stringen
 	     
 	     while(num > 0){		// Konverterer int verdi til bit
@@ -68,18 +69,5 @@ public class Converter {
 	     
 	     return builder.toString();
 	  }
-	
-	/** Metode for å utføre Bitwise operasjoner på to bit-stringer */
-	public static String bitwise(String one, String two, int operation){
-		int first = bitToInt(one);		// Første bitstring
-		int second = bitToInt(two);		// Andre bitstring
-		int result = 0;				
-		
-		if(operation == 1) {			// Gjør en Bitwise AND (&)
-			result = first & second;
-			return intToBit(result);
-		}
-		else result = first ^ second;	// Bitwise OR (^)
-		return intToBit(result);
-	}
+
 }
