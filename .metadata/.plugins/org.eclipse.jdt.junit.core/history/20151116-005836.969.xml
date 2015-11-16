@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="TestCollector" project="TDD_Prosjekt" tests="6" started="6" failures="0" errors="0" ignored="0">
+  <testsuite name="TestCollector" time="0.072">
+    <testcase name="saveDuplicateData_DuplicateData_ShouldReturnListOfDuplicatesWithAllParameters" classname="TestCollector" time="0.061"/>
+    <testcase name="saveData_LineOfData_ShouldReturnMapWithCorrectValues" classname="TestCollector" time="0.001"/>
+    <testcase name="saveData_MissingParameters_ShouldThrowIllegalArgumentException" classname="TestCollector" time="0.0"/>
+    <testcase name="nextLine_WhenNextLineRequested_ShouldReturnTrue_WithMockito" classname="TestCollector" time="0.009"/>
+    <testcase name="openFile_WhenOpenFileRequested_ShouldReturnData_WithMockito" classname="TestCollector" time="0.0"/>
+    <testcase name="readLine_WhenReadLineRequested_ShouldReturnSingleLine_WithMockito" classname="TestCollector" time="0.001"/>
+  </testsuite>
+</testrun>

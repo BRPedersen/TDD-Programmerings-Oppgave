@@ -1,0 +1,85 @@
+import java.util.Collections;
+
+public class Converter {
+	
+	static String hexValues = "0123456789ABCDEF";		// String som brukes til å definerer tallverdier for karakterene
+	
+	/** Metode for å konvertere en Hex-string til en int verdi */
+	public static int hexToInt(String hex) {
+		
+		if (hex.length() > 6) throw new IllegalArgumentException();		// Sjekker om stringen som kommer inn er for lang, kaster IllegalArgumentException.
+		
+		
+		for (int i = 0; i < hex.length(); i++)		// Sjekker om en karakter i stringen er en hexadecimal karakter, hvis ikke kastest IllegalArgumentException 
+			if (Character.digit(hex.charAt(i), 16) == -1) 
+				throw new IllegalArgumentException();
+			
+			
+		int counter = hex.length() -1;			// Lengde på hex-verdi
+		int sum = 0;							// int som skal returneres, hvis hex stringen er tom vil det returneres 0
+			
+		
+		for (char c : hex.toCharArray()) {			// Går gjennom alle verdiene som sendes inn
+			char d = Character.toUpperCase(c);		// Gjør om hver karakter til upperCase, slik at koden finner den i hexValues
+			int i = hexValues.indexOf(d);			// "konverterer" verdiene til tallverdien de har i posisjonen i stringen
+			sum = (int) (sum + (Math.pow(16, counter))*i);	// Bruker Math.pow til å regne ut desimal-verdien av hex-verdien
+			counter--;
+		}
+		return sum;	
+		
+	}
+	
+	/** Metode for å konvertere en Bit-string til en int verdi */
+	public static int bitToInt(String binary) {
+		
+		if (binary.length() > 24) throw new IllegalArgumentException();		// Sjekker lengden på bit stringen
+	    for (int i = 0; i < binary.length(); i++)							// Sjekker om andre tegn enn 0 og 1 sendes inn
+	    	if (Character.digit(binary.charAt(i), 2) == -1)
+	    		throw new IllegalArgumentException();
+		
+	    char[] numbers = binary.toCharArray();		// Lager et array av stringen med bit-verdier
+	    int result = 0;								// Variabel som returneres, returnerer 0 hvis String binary er en tom string
+	    
+	    for(int i = numbers.length - 1; i >= 0; i--)	// For-løkke som går gjennom bit-stringen og bruker Math.pow til å regne ut verdien
+	        if(numbers[i]=='1')
+	            result += Math.pow(2, (numbers.length-i - 1));
+	    return result;
+	}
+	
+	/** Metode for å konvertere en int verdi til en Bit-string */
+	public static String intToBit(int num){
+		 java.util.ArrayList<Integer> binary = new java.util.ArrayList<>();		// ArrayList for å holde på bit-stringen
+	     
+	     while(num > 0){		// Konverterer int verdi til bit
+	       binary.add(num%2);
+	       num = num/2;
+	     }
+	     
+	     Collections.reverse(binary);	// Reverserer ArrayList for å få riktig rekkefølge på binær-tallene
+	     
+	     StringBuilder builder = new StringBuilder();	// Oppretter en StringBuilder for å kunne returnere en String
+	     
+	     for (Integer i : binary){
+	    	 while(builder.length() < 24 - binary.size()){		// Legger til 0'er fremst i stringen for å oppfylle kravet om 24 tegn
+	    		 builder.append(0);								// Legger binærtallene fra binary til StringBuilder builder
+	    	 }
+	     builder.append(i);
+	     }
+	     
+	     return builder.toString();
+	  }
+	
+	/** Metode for å utføre Bitwise operasjoner på to bit-stringer */
+	public static String bitwise(String one, String two, int operation){
+		int first = bitToInt(one);		// Første bitstring
+		int second = bitToInt(two);		// Andre bitstring
+		int result = 0;				
+		
+		if(operation == 1) {			// Gjør en Bitwise AND (&)
+			result = first & second;
+			return intToBit(result);
+		}
+		else result = first ^ second;	// Bitwise OR (^)
+		return intToBit(result);
+	}
+}

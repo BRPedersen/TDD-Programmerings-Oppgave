@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Collections;
 
 public class Converter {
@@ -82,4 +83,12 @@ public class Converter {
 		else result = first ^ second;	// Bitwise OR (^)
 		return intToBit(result);
 	}
+	
+	
+	
+	
+	
+	
+	
+
 }

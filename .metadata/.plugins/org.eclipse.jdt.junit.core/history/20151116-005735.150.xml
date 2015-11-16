@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="TestConverter" project="TDD_Prosjekt" tests="11" started="11" failures="0" errors="0" ignored="0">
+  <testsuite name="TestConverter" time="0.001">
+    <testcase name="bitwise_BitwiseANDOperationOnTwoBitStrings_ShouldReturnTwentyFourCharBitString" classname="TestConverter" time="0.0"/>
+    <testcase name="bitToInt_InvalidCharacterInString_ShouldThrowIllegalArgumentException" classname="TestConverter" time="0.0"/>
+    <testcase name="bitwise_BitwiseOROperationOnTwoBitStrings_ShouldReturnTwentyFourCharBitString" classname="TestConverter" time="0.0"/>
+    <testcase name="bitToInt_TooLongString_ShouldThrowIllegalArgumentException" classname="TestConverter" time="0.001"/>
+    <testcase name="bitToInt_EmptyString_ShouldReturnZero" classname="TestConverter" time="0.0"/>
+    <testcase name="hexToInt_EmptyString_ShouldReturnZero" classname="TestConverter" time="0.0"/>
+    <testcase name="hexToInt_ValidHexString_ShouldReturnConvertedValue" classname="TestConverter" time="0.0"/>
+    <testcase name="hexToInt_InvalidCharacterInString_ShouldThrowIllegalArgumentException" classname="TestConverter" time="0.0"/>
+    <testcase name="intToBit_ValidIntValue_ShouldReturnConvertedValue" classname="TestConverter" time="0.0"/>
+    <testcase name="bitToInt_ValidBitString_ShouldReturnConvertedValue" classname="TestConverter" time="0.0"/>
+    <testcase name="hexToInt_TooLongString_ShouldThrowIllegalArgumentException" classname="TestConverter" time="0.0"/>
+  </testsuite>
+</testrun>
