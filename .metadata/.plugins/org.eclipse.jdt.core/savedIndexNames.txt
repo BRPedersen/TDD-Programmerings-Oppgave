@@ -9,8 +9,8 @@ INDEX VERSION 1.127+C:\Users\Greys\Documents\GitHub\TDD-Programmerings-Oppgave\.
 4070956152.index
 1738363733.index
 766596693.index
-1094395942.index
 3972726963.index
+1094395942.index
 3371159263.index
 1576396506.index
 1711765710.index

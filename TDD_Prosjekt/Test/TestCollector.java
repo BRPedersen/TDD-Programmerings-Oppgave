@@ -1,31 +1,31 @@
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
+
+@RunWith(MockitoJUnitRunner.class)
 public class TestCollector {
 	
 	File file;
 	Collector collector;
-	HashMap<String, ArrayList<String>> expectedMap;
-	ArrayList<String> list;
+	Collector.Entry entryList;
+	HashMap<String, Collector.Entry> expectedMap;
 	
 	@Before
 	public void setUp(){
 		file = mock(File.class);
 		collector = new Collector(file);
 		
-		/** Burde det være slik, eller burde Collector implementere File
-		 * og Override metodene fra File, slik at man kaller på dem fra collector
-		 * istede for file? 
-		 */
-		
+		entryList = new Collector.Entry();
 		expectedMap = new HashMap<>();
-		list = new ArrayList<>();
 	}
 	
 	// File - tester
@@ -33,26 +33,26 @@ public class TestCollector {
 	@Test
 	public void openFile_WhenOpenFileRequested_ShouldReturnData_WithMockito(){
 		
-		when(file.openFile()).thenReturn("03ac0f 1 110101000000110111001101 001000011110011101001111");
+		when(collector.openFile("fil")).thenReturn("03ac0f 1 110101000000110111001101 001000011110011101001111");
+		assertThat(collector.openFile("fil"), equalTo("03ac0f 1 110101000000110111001101 001000011110011101001111"));
+		verify(file, times(1)).openFile();
 		
-		assertThat(file.openFile(), equalTo("03ac0f 1 110101000000110111001101 001000011110011101001111"));
-		
-		//file.openFile();
-		//verify(file, times(1)).openFile();
 	}
 	
 	@Test
 	public void readLine_WhenReadLineRequested_ShouldReturnSingleLine_WithMockito(){
 		
-		when(file.readLine()).thenReturn("03ac0f");
-		assertThat(file.readLine(), equalTo("03ac0f"));
+		when(collector.readLine()).thenReturn("03ac0f");
+		assertThat(collector.readLine(), equalTo("03ac0f"));
+		verify(file, times(1)).readLine();
 	}
 	
 	@Test
 	public void nextLine_WhenNextLineRequested_ShouldReturnTrue_WithMockito(){
 		
-		when(file.nextLine()).thenReturn(true);
-		assertThat(file.nextLine(), is(true));
+		when(collector.nextLine()).thenReturn(true);
+		assertThat(collector.nextLine(), is(true));
+		verify(file, times(1)).nextLine();
 	}
 	
 	// Collector - tester
@@ -60,38 +60,27 @@ public class TestCollector {
 	@Test
 	public void saveData_LineOfData_ShouldReturnMapWithCorrectValues(){
 		
-		/** Er dette formatet ønskelig, eller skal det være:
-		 * Første Linje med måledata
-		 * Første Linje med måledata konvertert til int
-		 * Andre Linje med måledata
-		 * Andre Linja med måledata konvertert til int
-		 * osv ?
-		 */
+		String key = "03ac0f";
+		entryList.value = "110101000000110111001101" + ", " + 13897165 + ", " + "001000011110011101001111" + ", " + 2221903 + ", " + "000000000000010101001101" + ", " + 1357;		
+		expectedMap.put(key, entryList);
 		
-		list.add("110101000000110111001101");
-		list.add("001000011110011101001111");
-		list.add("000000000000010101001101");
-		list.add("1357");
-		
-		expectedMap.put("03ac0f", list);
-		
-		assertThat(collector.saveData("03ac0f", "110101000000110111001101", "001000011110011101001111", 1), equalTo(expectedMap));
+		assertThat(collector.createEntry("03ac0f", "110101000000110111001101", "001000011110011101001111", 1).toString(), equalTo(expectedMap.toString()));
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void saveData_MissingParameters_ShouldThrowIllegalArgumentException(){
 		
-		collector.saveData("03ac0f", "", "001000011110011101001111", 1);
+		collector.createEntry("03ac0f", "", "001000011110011101001111", 1);
 	}
 	
 	@Test
 	public void saveDuplicateData_DuplicateData_ShouldReturnListOfDuplicatesWithAllParameters(){
 		
-		collector.saveData("03ac0f", "110101000000110111001101", "001000011110011101001111", 1);
-		collector.saveData("03ac0f", "110101000000110111001101", "001000011110011101001111", 1);
+		collector.createEntry("03ac0f", "110101000000110111001101", "001000011110011101001111", 3);
+		collector.createEntry("03ac0f", "110101000000110111001101", "001000011110011101001111", 1);
 		
 
-		assertThat(collector.saveDuplicateData("03ac0f", "110101000000110111001101", "001000011110011101001111", 1).size(), equalTo(4));
+		assertThat(collector.saveDuplicateData("03ac0f", "110101000000110111001101", "001000011110011101001111", 1).size(), equalTo(8));
 	}
 
 }

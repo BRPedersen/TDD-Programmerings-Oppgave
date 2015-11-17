@@ -3,47 +3,81 @@ import java.util.HashMap;
 
 public class Collector {
 
-	private File file;
+	private static File file;
 	
-	public Collector(File file) {
+	
+	private ArrayList<String> duplicateList = new ArrayList<>();		// Liste for å holde på duplikat-verdier
+	private Entry e = new Entry();										// Entry som holder på verdier
+	private HashMap<String, Entry> map = new HashMap<>();				// HashMap som returneres, fylt med Entries og nøkkler
+	
+	
+	// Metoder fra interface File, blir Mock'et ved hjelp av Mockito
+	public Collector(File file){
 		this.file = file;
 	}
-
 	
-	public static HashMap<String, ArrayList<String>> saveData(String hex, String one, String two, int operation){
-		
-		if (hex.isEmpty() || one.isEmpty() || two.isEmpty()) throw new IllegalArgumentException();		// Kaster exception hvis noen av argumentene (som kan være tom) er tom
-		
-		 HashMap<String, ArrayList<String>> map = new HashMap<>();	// HashMap for å holde på alle verdiene med hex-verdi som nøkkel
-		 ArrayList<String> list = new ArrayList<>();				// ArrayList for å holde på måledata; orignal og konvertert
-		
-		String key = hex;
-		
-		String bitwise = Converter.bitwise(one, two, operation);		// Utfører bitwise operasjon på måledata
-		String intValue = String.valueOf(Converter.bitToInt(bitwise));	// Konverterer måledata til int verdi
-		
-		list.add(one);					// Første linje med original måledata
-		list.add(two);					// Andre linje med original måledata
-		list.add(bitwise);				// "Resultatet" av måledata. Linje med måledata som det har blitt utført en bitwise operation på
-		list.add(intValue);				// Int verdi av "Resultatet"
-		
-		if(map.containsKey(hex)) saveDuplicateData(hex, one, two, operation);	// Hvis måledata-id har blitt brukt før, brukes saveDuplicateData() til å legge data i logg
-		else if(operation == 1 || operation == 2) map.put(key, list);	// Hvis måledata-id ikke finnes fra før av, og verdiene er gyldige, legges verdiene over i HashMap
-		
-		return map;	
+	public Object openFile(String filename){
+		return file.openFile();
 	}
 	
-	public static ArrayList<String> saveDuplicateData(String hex, String one, String two, int operation){
+	public String readLine(){
+		return file.readLine();
+	}
+	
+	public boolean nextLine(){
+		return file.nextLine();
+	}
+	
+	/** Metode for å lagre data i et HashMap */
+	public HashMap<String, Entry> createEntry(String hex, String one, String two, int operation){
 		
-		ArrayList<String> duplicateList = new ArrayList<>();	// Liste for å holde på duplikat-verdier
+		if (hex.isEmpty() || one.isEmpty() || two.isEmpty()) throw new IllegalArgumentException();		// Kaster exception hvis noen av argumentene (som kan være tom) er tom
+	
+		String key = hex;												// Henter hex-verdi som brukes som nøkkel i HashMap
+		int oneInt = Converter.bitToInt(one);							// Int-verdi til første linje med måledata
+		int twoInt = Converter.bitToInt(two);							// Int-verdi til andre linje med måledata
+		String bitwise = Converter.bitwise(one, two, operation);		// Utfører bitwise operasjon på måledata
+		int intBitwise = (Converter.bitToInt(bitwise));					// Konverterer måledata til int verdi
+		
+		
+		if(map.containsKey(key)) saveDuplicateData(hex, one, two, operation);	// Hvis nøkkel finnes fra før kalles saveDuplicate metode	
+		else if(operation == 1 || operation == 2){		// Hvis operation verdi er korrekt og nøkkel er original legger man verdier inn i map						
+			e.value = one + ", " + oneInt + ", " + two + ", " + twoInt + ", " + bitwise + ", " + intBitwise;	// Lager en Entry av verdier
+			map.put(key, e);	
+		}
+		else saveDuplicateData(hex, one, two, operation);	// Hvis operation er ugyldig kalles saveDuplicate metode
+		
+		return map;
+	}
+	
+	/** Metode for å lagre stringer som er ugyldige eller har en duplikat nøkkel */
+	public ArrayList<String> saveDuplicateData(String hex, String one, String two, int operation){
+		
 		duplicateList.add(hex);
 		duplicateList.add(one);
 		duplicateList.add(two);
 		duplicateList.add(String.valueOf(operation));
 		
 		return duplicateList;
-
 	}
+	
+	/** Indre klasse for Entry til HashMap, basert på Entry.class fra Oblig 3 */
+	public static class Entry<V> {
+		
+		V value;
+		
+		public V getValue(){
+			return value;
+		}
+		
+		 @Override
+		 public String toString() {
+		    return "[" + value + "]";
+		 }
+	}
+
 }
+
+
 		
 	
